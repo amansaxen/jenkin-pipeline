@@ -2,7 +2,7 @@ pipeline {
     agent any
     
     environment {
-        APP_NAME = 'hello-world-app'
+        APP_NAME = 'jenkin-pipeline'
         PORT = '5000'
     }
     
@@ -17,7 +17,8 @@ pipeline {
             steps {
                 sh '''
                     python3 --version
-                    pip3 install -r requirements.txt
+                    python3 -m pip --version || python3 -m ensurepip --upgrade
+                    python3 -m pip install -r requirements.txt
                 '''
             }
         }
@@ -50,6 +51,9 @@ pipeline {
     post {
         success {
             echo "Application deployed! Access at: http://localhost:${PORT}"
+        }
+        failure {
+            echo 'Pipeline failed!'
         }
     }
 }
